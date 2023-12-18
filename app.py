@@ -55,7 +55,7 @@ def text2speech(message):
     }
 
     response = requests.post(API_URL, headers=headers, json=payloads)
-    with open('audio.mp3', 'wb') as file:
+    with open('audio.flac', 'wb') as file:
         file.write(response.content)
 
 
