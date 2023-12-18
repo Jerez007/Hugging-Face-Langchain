@@ -10,6 +10,8 @@ import streamlit as st
 
 load_dotenv(find_dotenv())
 HUGGINGFACEHUB_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN")
+ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
+
 
 # image to text model
 def img2text(url):
@@ -55,13 +57,30 @@ def text2speech(message):
     }
 
     response = requests.post(API_URL, headers=headers, json=payloads)
-    with open('audio.flac', 'wb') as file:
+    with open('audio.mp3', 'wb') as file:
         file.write(response.content)
 
+    # code below if for Elevenlabs. Not working yet. 
+    # payload = {
+    #     "model_id": "eleven_monolingual_v1",
+    #     "text": message,
+    #     "voice_settings": {
+    #         "stability": 0,
+    #         "similarity_boost": 0
+    #     }
+    # }
 
-# scenario = img2text("tokyo.webp")
-# story = generate_story(scenario)
-# text2speech(story)
+    # headers = {
+    #     'accept': 'audio/mpeg',
+    #     'xi-api-key': ELEVEN_LABS_API_KEY,
+    #     'Content-Type': 'application/json'
+    # }
+
+    # response = requests.post('https://api.elevenlabs.io/v1/text-to-speech/jBpfuIE2acCO8z3wKNLl?optimize_streaming_latency=0', json=payload, headers=headers)
+    # if response.status_code == 200 and response.content:
+    #     with open('audio.mp3', 'wb') as f:
+    #         f.write(response.content)
+
 
 
 def main():
@@ -84,7 +103,8 @@ def main():
         with st.expander("story"):
             st.write(story)
 
-        st.audio("audio.flac")
+        st.audio("audio.mp3")
+
 
 
 if __name__ == '__main__':
